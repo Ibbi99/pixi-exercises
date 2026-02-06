@@ -1,84 +1,107 @@
-#stats {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 10;
-  pointer-events: none;
-
-  font-family: Montserrat, Arial, sans-serif;
-  font-size: 14px;
-  color: white;
-
-  display: flex;
-  flex-direction: row;
-  gap: 0;
-
-}
-
-.stats-box {
-  background: #0A9396;
-  border: 2px solid #000;
-  padding: 10px 14px;
-  white-space: nowrap;
-
-  width: 260px;
-  text-align: center;
-  border-radius: 0;
-}
-
-#shapesCount {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-  border-right: 0;
-}
-
-#areaUsed {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-
-#controls {
-  position: absolute;
-  z-index: 10;
-  display: flex;
-  gap: 10px;
-  pointer-events: auto;
-}
-
-.ctrl {
-  display: flex;
-  align-items: center;
-  background: #0A9396;
-  border: 2px solid #000;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.ctrl button {
-  width: 42px;
-  height: 42px;
-  border: 0;
-  background: rgba(0, 0, 0, 0.25);
-  color: white;
-  font-size: 22px;
-  cursor: pointer;
-}
-
-.ctrlText {
-  padding: 0 12px;
-  color: white;
-  font-family: Montserrat, Arial, sans-serif;
-  white-space: nowrap;
-}
-
-/* Pixi canvas */
-canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1;
+:root {
+  --ui-bg: #0A9396;
+  --ui-border: #000;
+  --ui-text: #fff;
 }
 
 body {
   margin: 0;
+  overflow: hidden;
+  font-family: "Montserrat", Arial, sans-serif;
+  font-weight: 500;
+}
+
+canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/*the HUD*/
+#stats {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.stats-box {
+  background: var(--ui-bg);
+  border: 2px solid var(--ui-border);
+  color: var(--ui-text);
+  padding: 8px 12px;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/*bottom controls*/
+#controls {
+  position: absolute;
+  z-index: 10;
+  pointer-events: auto;
+
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  /*phone support*/
+}
+
+.ctrl-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  background: var(--ui-bg);
+  border: 2px solid var(--ui-border);
+  color: var(--ui-text);
+  padding: 8px 12px;
+  border-radius: 10px;
+}
+
+.ctrl-btn {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ctrl-label {
+  white-space: nowrap;
+}
+
+@media (max-width: 520px) {
+  #stats {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .stats-box {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  #controls {
+    gap: 8px;
+  }
+
+  .ctrl-group {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .ctrl-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+  }
 }
