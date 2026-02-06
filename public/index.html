@@ -16,18 +16,19 @@
     </div>
 
     <div id="controls">
-        <div class="ctrl">
-            <button id="spawnMinus">-</button>
-            <div class="ctrlText">Shapes/sec: <span id="spawnValue">1</span></div>
-            <button id="spawnPlus">+</button>
+        <div class="ctrl-group">
+            <button id="spawnMinus" class="ctrl-btn">-</button>
+            <span class="ctrl-label">Shapes/sec: <span id="spawnValue">1.0</span></span>
+            <button id="spawnPlus" class="ctrl-btn">+</button>
         </div>
 
-        <div class="ctrl">
-            <button id="gravMinus">-</button>
-            <div class="ctrlText">Gravity: <span id="gravValue">200</span></div>
-            <button id="gravPlus">+</button>
+        <div class="ctrl-group">
+            <button id="gravMinus" class="ctrl-btn">-</button>
+            <span class="ctrl-label">Gravity: <span id="gravValue">1400</span></span>
+            <button id="gravPlus" class="ctrl-btn">+</button>
         </div>
     </div>
+
 
     <div id="app">
         <div id="pixi-container"></div>
