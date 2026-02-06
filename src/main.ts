@@ -128,7 +128,9 @@ class Game {
             area.relayout(r);
 
             const headerY = r.y - area.config.headerHeight;
+
             htmlHud.setPosition(r.x, headerY);
+            controls.setPosition(r.x, r.y + r.h + 10);
 
             maskG.clear();
             maskG.rect(r.x, r.y, r.w, r.h).fill({ color: 0xffffff, alpha: 1 });
@@ -171,8 +173,14 @@ class Game {
         const margin = cfg.margin;
         const headH = cfg.headerHeight;
 
+        const controlsH = 70;      //space for the HTML controls
+        const extraGap = 12;       //gap between rectangle and controls
+
         const w = Math.min(cfg.maxWidth, window.innerWidth - margin * 2);
-        const h = Math.min(cfg.maxHeight, window.innerHeight - (margin * 2 + headH));
+        const h = Math.min(
+            cfg.maxHeight,
+            window.innerHeight - (margin * 2 + headH + controlsH + extraGap)
+        );
 
         return {
             x: margin,
@@ -181,6 +189,7 @@ class Game {
             h: Math.max(0, h),
         };
     }
+
 }
 
 type CanvasAreaConfig = {
@@ -269,6 +278,8 @@ class HtmlHud {
         this.shapesEl.textContent = `Number of current shapes: ${count}`;
         this.areaEl.textContent = `Surface occupied by shapes: ${Math.round(areaPx2)}`;
     }
+
+
 }
 /*
 *HtmlControls are the buttons (+/-)
@@ -343,6 +354,8 @@ class HtmlControls {
         this.gravValue.textContent = Math.round(clamped).toString();
         this.handleGravity(clamped);
     }
+
+
 }
 
 ////ex 5
