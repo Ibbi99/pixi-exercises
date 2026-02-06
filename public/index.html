@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/style.css">
+    <title>Test_Cris.V</title>
+</head>
+
+<body>
+    <div id="stats">
+        <div id="shapesCount" class="stats-box">Number of current shapes: 0</div>
+        <div id="areaUsed" class="stats-box">Surface occupied by shapes: 0 </div>
+    </div>
+
+    <div id="controls">
+        <div class="ctrl">
+            <button id="spawnMinus">-</button>
+            <div class="ctrlText">Shapes/sec: <span id="spawnValue">1</span></div>
+            <button id="spawnPlus">+</button>
+        </div>
+
+        <div class="ctrl">
+            <button id="gravMinus">-</button>
+            <div class="ctrlText">Gravity: <span id="gravValue">200</span></div>
+            <button id="gravPlus">+</button>
+        </div>
+    </div>
+
+    <div id="app">
+        <div id="pixi-container"></div>
+    </div>
+
+    <script type="module" src="./bundle.min.js"></script>
+</body>
+
+</html>
