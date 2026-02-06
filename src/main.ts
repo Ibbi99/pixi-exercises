@@ -7,6 +7,10 @@ interface Rect {
     h: number;
 }
 
+/*
+* Game creates the Pixi canvas, build evertthing like rectangle, shapes
+* Runs the update loop for every frame
+*/
 class Game {
     private static _instance: Game | null = null;
 
@@ -46,6 +50,15 @@ class Game {
         return Game._instance;
     }
 
+    /*
+    *We connect all the exercises here
+    *1. draw rectangle
+    *2. spawn falling shapes and mask
+    *3. click inside the rectangle so it spawn shape
+    *4. click shape to delete it
+    *5. show status with ts then with html
+    *6. buttons for spawn rate and gravity
+    */
     private bootstrap(): void {
         //ex 1
         const area = new CanvasArea({
@@ -75,7 +88,6 @@ class Game {
         // this.stage.addChild(statusPanel.view);
 
         //ex 6
-
         const controls = new HtmlControls(
             (rate) => {
                 shapeManager.setSpawnRate(rate);
@@ -106,7 +118,6 @@ class Game {
 
 
         hitG.on("pointerdown", (e) => {
-            console.log("HIT");
             const p = e.global;
             shapeManager.spawnAt(p.x, p.y);
         });
@@ -183,6 +194,10 @@ type CanvasAreaConfig = {
     fillAlpha: number;
 };
 
+/*
+*CanvasArea draws the rectanlge where the shapes are falling
+*It stores the rectangle size and position
+*/
 class CanvasArea {
     public readonly view: Container = new Container();
     public readonly config: CanvasAreaConfig;
@@ -218,6 +233,10 @@ class CanvasArea {
     }
 }
 
+/*
+*HtmlHud updates the HTML text on the page
+It shows how many shapes are inside the rectangle and how much space they occupy
+*/
 //ex 5 bonus
 class HtmlHud {
     private shapesEl: HTMLDivElement;
@@ -251,7 +270,11 @@ class HtmlHud {
         this.areaEl.textContent = `Surface occupied by shapes: ${Math.round(areaPx2)}`;
     }
 }
-
+/*
+*HtmlControls are the buttons (+/-)
+*changes tha values for shapes per second and gravity
+*updates the numbers in the HTML
+*/
 //ex 6
 class HtmlControls {
     private root: HTMLDivElement;
@@ -289,11 +312,17 @@ class HtmlControls {
         gravPlus.addEventListener("click", () => this.setGravity(this.gravity + 100));
     }
 
+    /*
+    *Moves the controls under the rectangle
+    */
     public setPosition(x: number, y: number): void {
         this.root.style.left = `${Math.round(x)}px`;
         this.root.style.top = `${Math.round(y)}px`;
     }
 
+    /*
+    *Updates the shown text values
+    */
     public setValues(spawnRate: number, gravity: number): void {
         this.spawnRate = spawnRate;
         this.gravity = gravity;
@@ -302,7 +331,7 @@ class HtmlControls {
     }
 
     private setSpawnRate(v: number): void {
-        const clamped = Math.max(0, Math.min(4000, v));
+        const clamped = Math.max(0.2, Math.min(10, v));
         this.spawnRate = clamped;
         this.spawnValue.textContent = clamped.toFixed(1);
         this.handleSpawnRate(clamped);
@@ -349,6 +378,10 @@ class HtmlControls {
 // }
 
 //ex 2
+/*
+*FallingShape is the base class for all shapes
+*every shape has: a Pixi Graphics, a vertical spees (vy), an area value (used for status)
+*/
 abstract class FallingShape {
     public readonly g: Graphics = new Graphics();
     public vy = 0;
@@ -363,6 +396,9 @@ abstract class FallingShape {
         this.g.position.set(x, y);
     }
 
+    /*
+    *Redraw the shape and recalculate its area
+    */
     public redraw(): void {
         this.draw();
         this.area = this.computeArea();
@@ -371,6 +407,9 @@ abstract class FallingShape {
     protected abstract draw(): void;
     protected abstract computeArea(): number;
 
+    /*
+    *Move the shape down using gravity
+    */
     public update(dt: number, gravity: number): void {
         this.vy += gravity * dt;
         this.y += this.vy * dt;
@@ -567,7 +606,10 @@ class IrregularPolygonShape extends FallingShape {
     }
 }
 
-
+/*
+*ShapesFactory makes the new shapes
+*It decides: which shape type, the size and color, the start position (above the rectangle)
+*/
 class ShapeFactory {
     private static types: ShapeType[] = [
         "TRIANGLE",
@@ -579,7 +621,9 @@ class ShapeFactory {
         "STAR",
     ];
 
-
+    /*
+    *Spawn a random shape above the rectangle (random x)
+    */
     public static createRandom(area: Rect): FallingShape {
         const type = this.types[randInt(0, this.types.length - 1)];
 
@@ -618,12 +662,14 @@ class ShapeFactory {
                 shape = new CircleShape(x, y, 25, 0xffffff);
         }
 
-        console.log(type);
 
         shape.redraw();
         return shape;
     }
 
+    /*
+    *Spawn a shape exactly where the user clicked
+    */
     public static createAt(x: number, y: number): FallingShape {
         const type = this.types[randInt(0, this.types.length - 1)];
         const color = randColor();
@@ -670,6 +716,10 @@ type ShapeSpawnerConfig = {
     spawnEvery: number;   //1 shape / second
 };
 
+/*
+*ShapeMnager keeps a list of shapes and controls them
+*It does: spawns shapes every second, updates gravity, deletes shapes when they go offscreen, delete shapes when you click them
+*/
 class ShapeManager {
     public readonly view: Container = new Container();
 
@@ -679,6 +729,9 @@ class ShapeManager {
 
     constructor(private cfg: ShapeSpawnerConfig) { }
 
+    /*
+    *Runs every frame: maybe spawns a new shaape, moves all shapes down, deletes the shapes that left the bottom
+    */
     public update(dtPhysics: number, dtSpawn: number, area: Rect): void {
 
         this.spawnTimer += dtSpawn;
@@ -704,11 +757,17 @@ class ShapeManager {
     }
 
     //ex 6
+    /*
+    *Change how many shapes spawn per second
+    */
     public setSpawnRate(perSecond: number): void {
         const clamped = Math.max(0.2, Math.min(10, perSecond));
         this.cfg.spawnEvery = 1 / clamped;
     }
 
+    /*
+    *Change gravity
+    */
     public setGravity(g: number): void {
         this.cfg.gravity = Math.max(0, Math.min(4000, g));
     }
@@ -813,6 +872,9 @@ class ShapeManager {
     }
 
     //ex 5
+    /*
+    *Returns stats for the HTML HUD
+    */
     public getStats(area: Rect): { count: number; area: number } {
         let count = 0;
         let areaSum = 0;
@@ -836,14 +898,23 @@ class ShapeManager {
     }
 }
 
-
-
+/*
+*Returns a random number between min and max (float)
+*/
 function randFloat(min: number, max: number): number {
     return min + Math.random() * (max - min);
 }
+
+/*
+*Returns a random integer between min and max
+*/
 function randInt(min: number, max: number): number {
     return Math.floor(randFloat(min, max + 1));
 }
+
+/*
+*Returns a bright random color
+*/
 function randColor(): number {
     const r = randInt(80, 255);
     const g = randInt(80, 255);
@@ -851,6 +922,12 @@ function randColor(): number {
     return (r << 16) | (g << 8) | b;
 }
 
+/*
+*Generates points for an irregular polygon
+- vortexCount = how many corners the shape have
+- baseR = average radius
+- irregularity = how much the radius varies
+*/
 function randomIrregularPoints(
     vertexCount: number,
     baseR: number,
@@ -869,6 +946,9 @@ function randomIrregularPoints(
     return pts;
 }
 
+/*
+*Computes the polygon area using shoelace formula
+*/
 function polygonArea(pts: { x: number; y: number }[]): number {
     let sum = 0;
     for (let i = 0; i < pts.length; i++) {
