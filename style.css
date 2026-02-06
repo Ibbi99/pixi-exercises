@@ -1,0 +1,150 @@
+/* Reset */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: #f3f3f3;              /* no background image */
+  color: #111;
+}
+
+/* Page layout */
+.main-container{
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 60px 20px;
+}
+
+/* Add a big title like in the screenshot (uses your <title> only otherwise).
+   If you want an actual visible title, add <h1 class="hero-title">Games Test</h1> above the grid.
+*/
+.hero-title{
+  font-size: clamp(44px, 6vw, 72px);
+  letter-spacing: -0.03em;
+  margin: 0 0 36px;
+  text-align: center;
+}
+
+/* Grid */
+.exercises-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(220px, 1fr));
+  gap: 26px;
+  width: min(980px, 100%);
+  perspective: 1200px;
+}
+
+/* Card (glassmorphism) */
+.exercise-card{
+  position: relative;
+  border-radius: 18px;
+  padding: 26px 22px 20px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.85),
+    rgba(255,255,255,0.55)
+  );
+  border: 1px solid rgba(0,0,0,0.08);
+  box-shadow:
+    0 18px 50px rgba(0,0,0,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.65);
+  backdrop-filter: blur(10px);
+  transform: rotateY(-10deg);
+  transition: transform .25s ease, box-shadow .25s ease;
+  min-height: 240px;
+  overflow: hidden;
+}
+
+/* subtle “depth” like the screenshot */
+.exercise-card:nth-child(2){ transform: rotateY(0deg) translateY(-6px); }
+.exercise-card:nth-child(3){ transform: rotateY(10deg); }
+.exercise-card:nth-child(5){ transform: rotateY(-6deg); }
+.exercise-card:nth-child(6){ transform: rotateY(6deg); }
+
+.exercise-card:hover{
+  transform: rotateY(0deg) translateY(-6px);
+  box-shadow:
+    0 26px 70px rgba(0,0,0,0.16),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+}
+
+/* top tiny label like “Resources / Management / Development” */
+.exercise-card::before{
+  content: "Exercise";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: rgba(0,0,0,0.65);
+}
+
+/* Card content */
+.card-header{
+  display: grid;
+  gap: 10px;
+  margin-top: 22px; /* leave room for pill label */
+  text-align: center;
+}
+
+.exercise-number{
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  font-weight: 700;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(0,0,0,0.08);
+}
+
+.exercise-title{
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.9;
+  line-height: 1.3;
+  max-width: 240px;
+  margin: 0 auto;
+}
+
+/* Footer button */
+.card-footer{
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 18px;
+  display: grid;
+}
+
+.view-btn{
+  text-decoration: none;
+  text-align: center;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: #111;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.10);
+  font-weight: 600;
+}
+
+.view-btn:hover{
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.9);
+}
+
+/* Responsive */
+@media (max-width: 900px){
+  .exercises-grid{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+}
+@media (max-width: 560px){
+  .exercises-grid{ grid-template-columns: 1fr; }
+  .exercise-card{ transform: none !important; }
+
+  
+}

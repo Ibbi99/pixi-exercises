@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Exercise 6 - Controls</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        body {
+            margin: 0;
+        }
+        
+        .game-area {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            margin: 0 auto;
+        }
+        
+        .controls-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+            padding: 25px;
+            background: #2c3e50;
+            border-radius: 10px;
+            color: white;
+        }
+        
+        .control-group {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .control-label {
+            display: block;
+            margin-bottom: 15px;
+            font-size: 16px;
+            color: #ecf0f1;
+        }
+        
+        .control-buttons {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .control-btn-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: #3498db;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .control-btn-small:hover {
+            background: #2980b9;
+            transform: scale(1.1);
+        }
+        
+        .control-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2ecc71;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .control-unit {
+            font-size: 14px;
+            color: #bdc3c7;
+            margin-left: 5px;
+        }
+        
+        .stats-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            padding: 20px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            min-width: 120px;
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="exercise-header">
+            <h1><span class="exercise-number">Exercise 6</span> Controls Panel</h1>
+        </div>
+        
+        <div class="exercise-description">
+            <p>Control panel for adjusting shape generation frequency and gravity value with real-time feedback.</p>
+        </div>
+        
+        <div class="controls-panel">
+            <div class="control-group">
+                <label class="control-label">Shapes per Second</label>
+                <div class="control-buttons">
+                    <button id="decreaseFreq" class="control-btn-small">-</button>
+                    <div>
+                        <span id="freqValue" class="control-value">1.0</span>
+                        <span class="control-unit">/sec</span>
+                    </div>
+                    <button id="increaseFreq" class="control-btn-small">+</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label class="control-label">Gravity Value</label>
+                <div class="control-buttons">
+                    <button id="decreaseGravity" class="control-btn-small">-</button>
+                    <div>
+                        <span id="gravityValue" class="control-value">900</span>
+                        <span class="control-unit">px/s²</span>
+                    </div>
+                    <button id="increaseGravity" class="control-btn-small">+</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-display">
+            <div class="stat-item">
+                <div class="stat-label">Current Shapes</div>
+                <div id="currentShapes" class="stat-value">0</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Total Area</div>
+                <div id="totalArea" class="stat-value">0 px²</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Generation Rate</div>
+                <div id="genRate" class="stat-value">1.0/sec</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Gravity</div>
+                <div id="gravityDisplay" class="stat-value">900</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="startBtn" class="control-btn">Start</button>
+            <button id="stopBtn" class="control-btn stop">Pause</button>
+            <button id="clearBtn" class="control-btn clear">Clear All</button>
+        </div>
+        
+        <div class="game-area">
+            <div id="stats">
+                <div id="shapesCount" class="stats-box">Shapes: 0</div>
+                <div id="areaUsed" class="stats-box">Area: 0 px²</div>
+                <div id="gravityText" class="stats-box">Gravity: 900</div>
+            </div>
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+        </div>
+        
+        <div class="features">
+            <h3>Features Implemented</h3>
+            <ul class="features-list">
+                <li>Controls for shape generation frequency</li>
+                <li>Controls for gravity value</li>
+                <li>Real-time value updates</li>
+                <li>HTML-based control panel</li>
+                <li>Click to create/remove shapes</li>
+                <li>All previous exercises combined</li>
+                <li>Responsive control design</li>
+                <li>Visual feedback for controls</li>
+            </ul>
+        </div>
+        
+        <div class="navigation">
+            <h3>Navigate to Other Exercises</h3>
+            <div class="nav-links">
+                <a href="../exercise1+2/index.html" class="nav-link">Exercise 1 and 2 → Shapes</a>
+                <a href="../exercise2h/index.html" class="nav-link">Exercise 2 → Random Shapes</a>
+                <a href="../exercise3/index.html" class="nav-link">Exercise 3 → Click to Generate</a>
+                <a href="../exercise4/index.html" class="nav-link">Exercise 4 → Click to Remove</a>
+                <a href="../exercise5/index.html" class="nav-link">Exercise 5 → Statistics Display</a>
+                <a href="../exercise5c/index.html" class="nav-link">Exercise 5c → Statistics Display with HTML</a>
+                <a href="../exercise6/index.html" class="nav-link">Exercise 6 → Controls</a>
+                <a href="../index.html" class="nav-link">← Back to Main Menu</a>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.x/dist/pixi.min.js"></script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>
